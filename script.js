@@ -11,6 +11,10 @@ const GameEngine = {
             const printEl = document.createElement('div');
             printEl.classList.add('print-move');
 
+            const pButtonEl = document.createElement('div');
+            pButtonEl.classList.add('print-button');
+            printEl.appendChild(pButtonEl);
+
             printEl.addEventListener('mouseenter', () => {
                 this.createScreen('printer');
             });
@@ -22,6 +26,10 @@ const GameEngine = {
         if(screen === 'printer'){
             const comEl = document.createElement('div');
             comEl.classList.add('comp-move');
+
+            const cButtonEl = document.createElement('div');
+            cButtonEl.classList.add('comp-button');
+            comEl.appendChild(cButtonEl);
 
             comEl.addEventListener('mouseenter', () => {
                 this.createScreen('computer');

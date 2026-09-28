@@ -7,18 +7,32 @@ html, body {
 
 .print-move {
     height: 50%;
-    width: 2.5%;
+    width: 3.5%;
+    position: absolute;
+    right: 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.print-button {
+    height: 100%;
+    width: 70%;
     background-color: gray;
     opacity: 0.5;
-    position: absolute;
-    right: 1%;
 }
 
 .comp-move {
     height: 50%;
-    width: 2.5%;
+    width: 3.5%;
+    position: absolute;
+    left: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.comp-button {
+    height: 100%;
+    width: 70%;
     background-color: gray;
     opacity: 0.5;
-    position: absolute;
-    left: 1%;
 }
