@@ -1,7 +1,9 @@
 const GameEngine = {
     curScreen: null,
+    office: null,
     startGame(){
         if(this.curScreen === null){
+            this.makeOffice();
             this.createScreen('computer');
         }
     },
@@ -34,6 +36,9 @@ const GameEngine = {
 
             document.body.appendChild(aboveEl);
 
+            this.office.classList.remove('comp', 'print', 'abv');
+            this.office.classList.add('comp');
+
             this.curScreen = [printEl, aboveEl];
         }
         if(screen === 'printer'){
@@ -50,6 +55,9 @@ const GameEngine = {
 
             document.body.appendChild(comEl);
 
+            this.office.classList.remove('comp', 'print', 'abv');
+            this.office.classList.add('print');
+
             this.curScreen = [comEl];
         }
         if(screen === 'above'){
@@ -64,6 +72,10 @@ const GameEngine = {
                 this.createScreen('computer');
             });
             document.body.appendChild(bottomEl);
+            
+            this.office.classList.remove('comp', 'print', 'abv');
+            this.office.classList.add('abv');
+
             this.curScreen = [bottomEl];
         }
     },
@@ -74,6 +86,13 @@ const GameEngine = {
             });
             this.curScreen = null;
         }
+    },
+    makeOffice(){
+        const officeEl = document.createElement('img');
+        officeEl.classList.add('office');
+        officeEl.src = 'image.png';
+        this.office = officeEl;
+        document.body.appendChild(officeEl);
     }
 }
 

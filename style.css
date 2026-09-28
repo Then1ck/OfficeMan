@@ -4,6 +4,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .print-move {
@@ -68,4 +69,27 @@ html, body {
     width: 100%;
     background-color: gray;
     opacity: 0.5;
+}
+
+.office {
+    display: flex;
+    position: absolute;
+    overflow: hidden;
+    width: 200%;
+    height: 200%;
+    background-color: aqua;
+    z-index: -1;
+    transition: transform 0.8s;
+}
+
+.office.comp {
+    transform: translate(0, -25%);
+}
+
+.office.abv {
+    transform: translate(0, 25%);
+}
+
+.office.print {
+    transform: translate(-25%, -25%);
 }
