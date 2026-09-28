@@ -1,11 +1,48 @@
+const Hazard_Database = [
+    {
+        id: 'simon_says',
+        name: 'Boss Says',
+        desc: 'A task appears on your computer. '+
+        'To finish it, lights of certain colors will flash in sequence on your monitor. '+
+        'Once the sequence finish, buttons corresponding to each of the color appears and you must ' +
+        'press on the buttons according to how it was flashed previously.',
+        interval: (2000),
+        action: (self) => {
+            const screen = document.querySelector('.comp-screen');
+
+            const ss_icon = document.createElement('div');
+            ss_icon.classList.add('comp-icons');
+
+            screen.appendChild(ss_icon);
+        }
+    }
+]
+
 const GameEngine = {
     curScreen: null,
     office: null,
+    hazards: [Hazard_Database[0]],
+    activeHazards: [],
     startGame(){
         if(this.curScreen === null){
             this.makeOffice();
             this.createScreen('computer');
+
+            // console.log(this.hazards);
+            this.startHazards();
         }
+    },
+    startHazards(){
+        this.hazards.forEach(hazard => {
+            console.log(hazard.interval)
+            const runHazard = () => {
+                if(this.activeHazards.length > 3)return;
+                hazard.action(hazard);
+                setTimeout(runHazard, hazard.interval);
+                this.activeHazards.push(hazard);
+            }
+            setTimeout(runHazard, hazard.interval);
+        });
     },
     createScreen(screen){
         this.removeCurScreen();
@@ -102,6 +139,10 @@ const GameEngine = {
         const compScreen = document.createElement('div');
         compScreen.classList.add('comp-screen');
         computer.appendChild(compScreen);
+
+        const compLight = document.createElement('div');
+        compLight.classList.add('comp-light');
+        computer.appendChild(compLight);
 
         officeEl.appendChild(computer);
 

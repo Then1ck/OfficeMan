@@ -115,8 +115,38 @@ html, body {
 }
 
 .comp-screen {
-    width: 90%;
+    width: 92%;
     height: 90%;
-    background-color: aqua;
+    background-color: white;
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow: hidden;
+}
+
+.comp-light {
+    background-color: green;
+    bottom: 5px;
+    right: 20%;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.comp-light.warning {
+    background-color: yellow;
+}
+
+.comp-light.danger {
+    background-color: red;
+}
+
+.comp-icons {
+    width: 80px;
+    height: 80px;
+    margin-left: 10%;
+    border-radius: 50%;
+    background-color: yellow;
 }
