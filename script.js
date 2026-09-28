@@ -88,9 +88,23 @@ const GameEngine = {
         }
     },
     makeOffice(){
-        const officeEl = document.createElement('img');
+        const officeEl = document.createElement('div');
         officeEl.classList.add('office');
-        officeEl.src = 'image.png';
+
+        const officeImg = document.createElement('img');
+        officeImg.src = 'image.png';
+        officeImg.classList.add('office-img');
+        officeEl.appendChild(officeImg);
+
+        const computer = document.createElement('div');
+        computer.classList.add('computer');
+
+        const compScreen = document.createElement('div');
+        compScreen.classList.add('comp-screen');
+        computer.appendChild(compScreen);
+
+        officeEl.appendChild(computer);
+
         this.office = officeEl;
         document.body.appendChild(officeEl);
     }

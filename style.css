@@ -1,6 +1,7 @@
 html, body {
     margin: 0;
     height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -75,21 +76,47 @@ html, body {
     display: flex;
     position: absolute;
     overflow: hidden;
-    width: 200%;
-    height: 200%;
+    width: 200vw;
+    height: 200vh;
     background-color: aqua;
-    z-index: -1;
     transition: transform 0.8s;
+    align-items: center;
+    justify-content: center;
+}
+
+.office-img {
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 .office.comp {
-    transform: translate(0, -25%);
+    transform: translate(25%, -25%);
 }
 
 .office.abv {
-    transform: translate(0, 25%);
+    transform: translate(25%, 25%);
 }
 
 .office.print {
     transform: translate(-25%, -25%);
+}
+
+.computer {
+    width: 30%;
+    height: 35%;
+    bottom: 10%;
+    left: 10%;
+    background-color: gray;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+}
+
+.comp-screen {
+    width: 90%;
+    height: 90%;
+    background-color: aqua;
+    position: absolute;
 }
