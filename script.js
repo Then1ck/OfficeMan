@@ -21,7 +21,20 @@ const GameEngine = {
 
             document.body.appendChild(printEl);
 
-            this.curScreen = [printEl];
+            const aboveEl = document.createElement('div');
+            aboveEl.classList.add('above-move');
+
+            const aButtonEl = document.createElement('div');
+            aButtonEl.classList.add('above-button');
+            aboveEl.appendChild(aButtonEl);
+
+            aboveEl.addEventListener('mouseenter', () => {
+                this.createScreen('above');
+            });
+
+            document.body.appendChild(aboveEl);
+
+            this.curScreen = [printEl, aboveEl];
         }
         if(screen === 'printer'){
             const comEl = document.createElement('div');
@@ -38,6 +51,20 @@ const GameEngine = {
             document.body.appendChild(comEl);
 
             this.curScreen = [comEl];
+        }
+        if(screen === 'above'){
+            const bottomEl = document.createElement('div');
+            bottomEl.classList.add('bottom-move');
+            
+            const bButtonEl = document.createElement('div');
+            bButtonEl.classList.add('bottom-button');
+            bottomEl.appendChild(bButtonEl);
+
+            bottomEl.addEventListener('mouseenter', () => {
+                this.createScreen('computer');
+            });
+            document.body.appendChild(bottomEl);
+            this.curScreen = [bottomEl];
         }
     },
     removeCurScreen(){

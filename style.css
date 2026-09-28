@@ -3,6 +3,7 @@ html, body {
     height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .print-move {
@@ -33,6 +34,38 @@ html, body {
 .comp-button {
     height: 100%;
     width: 70%;
+    background-color: gray;
+    opacity: 0.5;
+}
+
+.above-move {
+    height: 7%;
+    width: 50%;
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: end;
+}
+
+.above-button {
+    height: 70%;
+    width: 100%;
+    background-color: gray;
+    opacity: 0.5;
+}
+
+.bottom-move {
+    height: 7%;
+    width: 50%;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: start;
+}
+
+.bottom-button {
+    height: 70%;
+    width: 100%;
     background-color: gray;
     opacity: 0.5;
 }
