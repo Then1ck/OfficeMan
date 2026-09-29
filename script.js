@@ -85,10 +85,9 @@ const Hazard_Database = [
                                 // timerCount();
                                 self.complete(self, {state: false})
                                 overlay.remove();
-                            }else console.log('gud');
+                            }
                             ansIdx++;
                             if(ansIdx >= color.length){
-                                console.log('fin');
                                 self.complete(self, {state: true});
                                 overlay.remove();
                             }
@@ -115,8 +114,16 @@ const Hazard_Database = [
             setColor();
         },
         summon: (self) => {
-            console.log(GameEngine.computer.notifs.length);
-            if(GameEngine.computer.notifs.length < 3){
+            const light = document.querySelector('.comp-light');
+            if(GameEngine.computer.notifs.length <= 0){
+                light.style.backgroundColor = 'green';
+            }else if(GameEngine.computer.notifs.length <= 2){
+                light.style.backgroundColor = 'yellow';
+            }else {
+                light.style.backgroundColor = 'red';
+            }
+
+            if(GameEngine.computer.notifs.length < 4){
                 GameEngine.computer.notifs.push(self);
                 
                 const screen = document.querySelector('.comp-screen');
@@ -133,11 +140,19 @@ const Hazard_Database = [
             }
         },
         complete: (self, evt) => {
-            GameEngine.computer.notifs = GameEngine.computer.notifs.filter(item => item !== self);
-            console.log(evt);
 
             if(evt.state === false){
                 self.action(self);
+            }else {
+                GameEngine.computer.notifs = GameEngine.computer.notifs.filter(item => item !== self);
+                const light = document.querySelector('.comp-light');
+                if(GameEngine.computer.notifs.length <= 1){
+                    light.style.backgroundColor = 'green';
+                }else if(GameEngine.computer.notifs.length <= 3){
+                    light.style.backgroundColor = 'yellow';
+                }else {
+                    light.style.backgroundColor = 'red';
+                }
             }
             const hEl = self.el;
             if(hEl !== null)hEl.remove();
@@ -178,18 +193,58 @@ const GameEngine = {
     hazards: Hazard_System.getHazardList(),
     computer: {
         notifs: [],
+        timers: 20000,
         isBusy: false,
         isOff: true,
     },
-    activeHazards: [],
+    gameEnd: false,
     startGame(){
         if(this.curScreen === null){
             this.makeOffice();
             this.createScreen('computer');
 
-            // console.log(this.hazards);
             this.startHazards();
+            this.computerTimer();
         }
+    },
+    computerTimer(){
+        const updateTick = 100;
+        this.timeInterval = setInterval(() => {
+            const light = document.querySelector('.comp-light');
+            if(!light)return;
+
+            const bg = light.style.backgroundColor;
+
+            switch(bg){
+                case 'red':
+                    this.computer.timers -= updateTick;
+                    break;
+                case 'yellow':
+                    this.computer.timers += updateTick;
+                    break;
+                case 'green':
+                    this.computer.timers += updateTick*2;
+            }
+            
+            if(this.computer.timers > 20000)this.computer.timers = 20000;
+            console.log(this.computer.timers);
+
+            if(this.computer.timers <= 0){
+                this.computer.timers = 0;
+
+                if(!this.gameEnd)this.fired();
+                this.gameEnd = true;
+                clearInterval(this.timeInterval);
+                this.timeInterval = null;
+            }
+        }, updateTick);
+    },
+    fired(){
+        const fired = document.createElement('div');
+        fired.classList.add('game-over');
+        fired.innerText = 'Game Over!';
+
+        document.body.appendChild(fired);
     },
     startHazards(){
         this.hazards.forEach(hazard => {
