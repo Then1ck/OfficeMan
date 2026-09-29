@@ -67,29 +67,29 @@ const Hazard_Database = [
 
                         cols.onclick = () => {
                             if(i !== color[ansIdx]){
-                                const errTab = document.createElement('div');
-                                errTab.classList.add('comp-tab');
-                                errTab.style.backgroundColor = 'blue';
-                                errTab.style.fontSize = '100px';
-                                screen.appendChild(errTab);
+                                // const errTab = document.createElement('div');
+                                // errTab.classList.add('comp-tab');
+                                // errTab.style.backgroundColor = 'blue';
+                                // errTab.style.fontSize = '100px';
+                                // screen.appendChild(errTab);
 
-                                let errTimer = 15;
-                                const timerCount = () => {
-                                    errTab.innerText = errTimer;
-                                    setTimeout(()=>{
-                                        errTimer--;
-                                        if(errTimer <= 0)errTab.remove();
-                                        timerCount();
-                                    },1000);
-                                }
-                                timerCount();
-                                GameEngine.removeComputerIcon(self);
+                                // let errTimer = 15;
+                                // const timerCount = () => {
+                                //     errTab.innerText = errTimer;
+                                //     setTimeout(()=>{
+                                //         errTimer--;
+                                //         if(errTimer <= 0)errTab.remove();
+                                //         timerCount();
+                                //     },1000);
+                                // }
+                                // timerCount();
+                                self.complete(self, {state: false})
                                 overlay.remove();
                             }else console.log('gud');
                             ansIdx++;
                             if(ansIdx >= color.length){
                                 console.log('fin');
-                                GameEngine.removeComputerIcon(self);
+                                self.complete(self, {state: true});
                                 overlay.remove();
                             }
                         }
@@ -115,15 +115,72 @@ const Hazard_Database = [
             setColor();
         },
         summon: (self) => {
-            GameEngine.addComputerIcon(self);
+            console.log(GameEngine.computer.notifs.length);
+            if(GameEngine.computer.notifs.length < 3){
+                GameEngine.computer.notifs.push(self);
+                
+                const screen = document.querySelector('.comp-screen');
+
+                const ss_icon = document.createElement('div');
+                ss_icon.classList.add('comp-icons');
+
+                ss_icon.onclick = () => {
+                    self.action(self);
+                }
+                self.el = ss_icon
+
+                screen.appendChild(ss_icon);
+            }
+        },
+        complete: (self, evt) => {
+            GameEngine.computer.notifs = GameEngine.computer.notifs.filter(item => item !== self);
+            console.log(evt);
+
+            if(evt.state === false){
+                self.action(self);
+            }
+            const hEl = self.el;
+            if(hEl !== null)hEl.remove();
         }
     }
 ]
 
+const Hazard_System = {
+    getHazard(id) {
+        const hazard = Hazard_Database.find(el => el.id === id);
+
+        if (!hazard) {
+            return null;
+        }
+
+        return {
+            id: hazard.id,
+            name: hazard.name,
+            desc: hazard.desc,
+            interval: hazard.interval,
+            action: hazard.action,
+            summon: hazard.summon,
+            complete: hazard.complete,
+            el: null
+        };
+    },
+
+    getHazardList() {
+        return [
+            this.getHazard('simon_says')
+        ];
+    }
+};
+
 const GameEngine = {
     curScreen: null,
     office: null,
-    hazards: [Hazard_Database[0]],
+    hazards: Hazard_System.getHazardList(),
+    computer: {
+        notifs: [],
+        isBusy: false,
+        isOff: true,
+    },
     activeHazards: [],
     startGame(){
         if(this.curScreen === null){
@@ -136,12 +193,9 @@ const GameEngine = {
     },
     startHazards(){
         this.hazards.forEach(hazard => {
-            console.log(hazard.interval)
             const runHazard = () => {
-                if(this.activeHazards.length > 3)return;
-                hazard.summon(hazard);
+                hazard.summon(Hazard_System.getHazard(hazard.id));
                 setTimeout(runHazard, hazard.interval);
-                this.activeHazards.push(hazard);
             }
             setTimeout(runHazard, hazard.interval);
         });
@@ -251,23 +305,6 @@ const GameEngine = {
         this.office = officeEl;
         document.body.appendChild(officeEl);
     },
-    addComputerIcon(hazard){
-        const screen = document.querySelector('.comp-screen');
-
-        const ss_icon = document.createElement('div');
-        ss_icon.classList.add('comp-icons');
-
-        ss_icon.onclick = () => {
-            hazard.action(hazard);
-        }
-        hazard.el = ss_icon
-
-        screen.appendChild(ss_icon);
-    },
-    removeComputerIcon(hazard){
-        const hEl = hazard.el;
-        if(hEl !== null)hEl.remove();
-    }
 }
 
 GameEngine.startGame();
