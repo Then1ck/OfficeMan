@@ -10,10 +10,94 @@ const Hazard_Database = [
         action: (self) => {
             const screen = document.querySelector('.comp-screen');
 
-            const ss_icon = document.createElement('div');
-            ss_icon.classList.add('comp-icons');
+            const overlay = document.createElement('div');
+            overlay.classList.add('comp-tab');
+            overlay.style.backgroundColor = 'black';
 
-            screen.appendChild(ss_icon);
+            screen.appendChild(overlay);
+
+            const color = [];
+            for(let i=0;i<3;i++){
+                color.push(Math.floor(Math.random()*4));
+            }
+
+            let idx=0;
+            const setColor = () => {
+                const curCol = idx>=color.length?null:color[idx];
+                idx++;
+                // const curCol = color.length>0?color.shift():null;
+                const tab = document.createElement('div');
+                tab.classList.add('comp-tab');
+                if(curCol===0){
+                    tab.style.backgroundColor = 'red';
+                }
+                if(curCol===1){
+                    tab.style.backgroundColor = 'blue';
+                }
+                if(curCol===2){
+                    tab.style.backgroundColor = 'green';
+                }
+                if(curCol===3){
+                    tab.style.backgroundColor = 'yellow';
+                }
+                if(curCol===null){
+                    const cenDiv = document.createElement('div');
+                    cenDiv.classList.add('simon-buttons');
+
+                    let ansIdx = 0;
+
+                    for(let i=0;i<4;i++){
+                        const cols = document.createElement('div');
+                        cols.classList.add('simon-color');
+
+                        switch(i){
+                            case 0:
+                                cols.style.backgroundColor = 'red';
+                                break;
+                            case 1:
+                                cols.style.backgroundColor = 'blue';
+                                break;
+                            case 2:
+                                cols.style.backgroundColor = 'green';
+                                break;
+                            case 3:
+                                cols.style.backgroundColor = 'yellow';
+                                break;
+                        }
+
+                        cols.onclick = () => {
+                            if(i !== color[ansIdx]){
+                                console.log('bad');
+                            }else console.log('gud');
+                            ansIdx++;
+                            if(ansIdx >= color.length){
+                                console.log('fin');
+                                overlay.remove();
+                            }
+                        }
+
+                        cenDiv.appendChild(cols);
+                    }
+                    
+                    overlay.appendChild(cenDiv);
+
+                    return;
+                }
+                screen.appendChild(tab);
+
+                setTimeout(() => {
+                    tab.remove();
+                    setTimeout(() => {
+                        setColor();
+                    }, 300);
+                    // setColor();
+                }, 700);
+            }
+
+            setColor();
+        },
+        summon: (self) => {
+            GameEngine.addComputerIcon(self);
         }
     }
 ]
@@ -37,7 +121,7 @@ const GameEngine = {
             console.log(hazard.interval)
             const runHazard = () => {
                 if(this.activeHazards.length > 3)return;
-                hazard.action(hazard);
+                hazard.summon(hazard);
                 setTimeout(runHazard, hazard.interval);
                 this.activeHazards.push(hazard);
             }
@@ -148,6 +232,18 @@ const GameEngine = {
 
         this.office = officeEl;
         document.body.appendChild(officeEl);
+    },
+    addComputerIcon(hazard){
+        const screen = document.querySelector('.comp-screen');
+
+        const ss_icon = document.createElement('div');
+        ss_icon.classList.add('comp-icons');
+
+        ss_icon.onclick = () => {
+            hazard.action(hazard);
+        }
+
+        screen.appendChild(ss_icon);
     }
 }
 
