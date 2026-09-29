@@ -6,7 +6,7 @@ const Hazard_Database = [
         'To finish it, lights of certain colors will flash in sequence on your monitor. '+
         'Once the sequence finish, buttons corresponding to each of the color appears and you must ' +
         'press on the buttons according to how it was flashed previously.',
-        interval: (10000),
+        interval: () => {return 10000},
         action: (self) => {
             const screen = document.querySelector('.comp-screen');
 
@@ -227,13 +227,13 @@ const GameEngine = {
             }
             
             if(this.computer.timers > 20000)this.computer.timers = 20000;
-            console.log(this.computer.timers);
+            // console.log(this.computer.timers);
 
             if(this.computer.timers <= 0){
                 this.computer.timers = 0;
 
                 if(!this.gameEnd)this.fired();
-                this.gameEnd = true;
+                // this.gameEnd = true;
                 clearInterval(this.timeInterval);
                 this.timeInterval = null;
             }
@@ -244,15 +244,28 @@ const GameEngine = {
         fired.classList.add('game-over');
         fired.innerText = 'Game Over!';
 
+        this.gameEnd = true;
+
         document.body.appendChild(fired);
+    },
+    finished(){
+        console.log('finished');
+        const victory = document.createElement('div');
+        victory.classList.add('victory');
+        victory.innerText = 'Day Ended';
+
+        this.gameEnd = true;
+
+        document.body.appendChild(victory);
     },
     startHazards(){
         this.hazards.forEach(hazard => {
             const runHazard = () => {
+                if(this.gameEnd)return;
                 hazard.summon(Hazard_System.getHazard(hazard.id));
-                setTimeout(runHazard, hazard.interval);
+                setTimeout(runHazard, hazard.interval());
             }
-            setTimeout(runHazard, hazard.interval);
+            setTimeout(runHazard, hazard.interval());
         });
     },
     createScreen(screen){
@@ -357,8 +370,30 @@ const GameEngine = {
 
         officeEl.appendChild(computer);
 
+        const clockEl = document.createElement('div');
+        clockEl.classList.add('clock');
+
+        const hourEl = document.createElement('div');
+        hourEl.classList.add('hour-hand');
+        clockEl.appendChild(hourEl);
+
+        const tickSpeed = 100;
+        let i=0;
+        const clockTick = setInterval(() => {
+            hourEl.style.transform = "translateX(-50%) rotate(" + i + "deg)";
+            i++;
+
+            if(i>=360){
+                clearInterval(clockTick);
+                this.finished();
+            }
+        }, tickSpeed);
+
+        officeEl.appendChild(clockEl);
+
         this.office = officeEl;
         document.body.appendChild(officeEl);
+
     },
 }
 
