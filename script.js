@@ -240,6 +240,7 @@ const GameEngine = {
         }, updateTick);
     },
     fired(){
+        // return;//this is temporary
         const fired = document.createElement('div');
         fired.classList.add('game-over');
         fired.innerText = 'Game Over!';
@@ -373,19 +374,33 @@ const GameEngine = {
         const clockEl = document.createElement('div');
         clockEl.classList.add('clock');
 
+        const clockBackEl = document.createElement('div');
+        clockBackEl.classList.add('clock-signs');
+        clockEl.appendChild(clockBackEl);
+
         const hourEl = document.createElement('div');
         hourEl.classList.add('hour-hand');
         clockEl.appendChild(hourEl);
 
+        const minuteEl = document.createElement('div');
+        minuteEl.classList.add('minute-hand');
+        clockEl.appendChild(minuteEl);
+
         const tickSpeed = 100;
-        let i=0;
+        let i=0, j=0;
         const clockTick = setInterval(() => {
-            hourEl.style.transform = "translateX(-50%) rotate(" + i + "deg)";
+            hourEl.style.transform = "translateX(-50%) rotate(" + (-90 + (i/2400)*240) + "deg)";
             i++;
 
-            if(i>=360){
+            minuteEl.style.transform = "translateX(-50%) rotate(" + ((j/300)*360) + "deg)";
+            j++;
+
+            if(i>=2400){
                 clearInterval(clockTick);
                 this.finished();
+            }
+            if(j >= 300){
+                j -= 300;
             }
         }, tickSpeed);
 
