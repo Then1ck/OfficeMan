@@ -6,7 +6,7 @@ const Hazard_Database = [
         'To finish it, lights of certain colors will flash in sequence on your monitor. '+
         'Once the sequence finish, buttons corresponding to each of the color appears and you must ' +
         'press on the buttons according to how it was flashed previously.',
-        interval: (2000),
+        interval: (10000),
         action: (self) => {
             const screen = document.querySelector('.comp-screen');
 
@@ -67,11 +67,29 @@ const Hazard_Database = [
 
                         cols.onclick = () => {
                             if(i !== color[ansIdx]){
-                                console.log('bad');
+                                const errTab = document.createElement('div');
+                                errTab.classList.add('comp-tab');
+                                errTab.style.backgroundColor = 'blue';
+                                errTab.style.fontSize = '100px';
+                                screen.appendChild(errTab);
+
+                                let errTimer = 15;
+                                const timerCount = () => {
+                                    errTab.innerText = errTimer;
+                                    setTimeout(()=>{
+                                        errTimer--;
+                                        if(errTimer <= 0)errTab.remove();
+                                        timerCount();
+                                    },1000);
+                                }
+                                timerCount();
+                                GameEngine.removeComputerIcon(self);
+                                overlay.remove();
                             }else console.log('gud');
                             ansIdx++;
                             if(ansIdx >= color.length){
                                 console.log('fin');
+                                GameEngine.removeComputerIcon(self);
                                 overlay.remove();
                             }
                         }
@@ -242,8 +260,13 @@ const GameEngine = {
         ss_icon.onclick = () => {
             hazard.action(hazard);
         }
+        hazard.el = ss_icon
 
         screen.appendChild(ss_icon);
+    },
+    removeComputerIcon(hazard){
+        const hEl = hazard.el;
+        if(hEl !== null)hEl.remove();
     }
 }
 
