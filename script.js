@@ -402,7 +402,7 @@ const GameEngine = {
         const clockTick = setInterval(() => {
             this.gameTimer++;
 
-            hourEl.style.transform = "translateX(-50%) rotate(" + (-90 + (i/2400)*240) + "deg)";
+            hourEl.style.transform = "translateX(-50%) rotate(" + (-90 + (i/10)) + "deg)";
             i++;
 
             minuteEl.style.transform = "translateX(-50%) rotate(" + ((j/300)*360) + "deg)";
@@ -431,6 +431,53 @@ const GameEngine = {
         printTop.classList.add('printer-top');
         printerEl.appendChild(printTop);
 
+        const printScreen = document.createElement('div');
+        printScreen.classList.add('printer-screen');
+
+        printScreen.onclick = () => {
+
+        }
+
+        printTop.appendChild(printScreen);
+
+        const scanner = document.createElement('div');
+        scanner.classList.add('scanner');
+        const openScanner = () => {
+            scanner.classList.add('open');
+
+            const scanLid = document.createElement('div');
+            scanLid.classList.add('scanner-lid');
+            scanner.appendChild(scanLid);
+
+            scanner.onclick = () => {
+                scanner.classList.remove('open');
+                scanLid.remove();
+
+                scanner.onclick = openScanner;
+            }
+        }
+
+        scanner.onclick = openScanner;
+
+        printTop.appendChild(scanner);
+
+        const printerButtons = document.createElement('div');
+        printerButtons.classList.add('printer-buttons');
+
+        const printButton = document.createElement('div');
+        printButton.classList.add('printer-button');
+        printButton.classList.add('prints');
+
+        printerButtons.appendChild(printButton);
+
+        const cancelButton = document.createElement('div');
+        cancelButton.classList.add('printer-button');
+        cancelButton.classList.add('cancel');
+
+        printerButtons.appendChild(cancelButton);
+
+        printTop.appendChild(printerButtons);
+
         const printBot = document.createElement('div');
         printBot.classList.add('printer-bottom');
         printerEl.appendChild(printBot);
@@ -439,18 +486,24 @@ const GameEngine = {
         printser.classList.add('printer-prints');
         printBot.appendChild(printser);
 
-        const printedEl = document.createElement('div');
-        printedEl.classList.add('printed-paper');
+        printButton.onclick = () => {
+            const printedEl = document.createElement('div');
+            printedEl.classList.add('printed-paper');
 
-        printedEl.onclick = () => {
-            printedEl.remove();
+            printedEl.onclick = () => {
+                printedEl.remove();
 
-            const paperEl = document.createElement('div');
-            paperEl.classList.add('paper');
-            document.body.appendChild(paperEl);
+                const paperEl = document.createElement('div');
+                paperEl.classList.add('paper');
+
+                paperEl.onclick = () => {
+                    paperEl.remove();
+                }
+                document.body.appendChild(paperEl);
+            }
+
+            printser.appendChild(printedEl);
         }
-
-        printser.appendChild(printedEl);
 
         const pInk = document.createElement('div');
         pInk.classList.add('printer-ink-cap');
@@ -459,6 +512,22 @@ const GameEngine = {
         const inkFill = document.createElement('div');
         inkFill.classList.add('printer-ink');
         pInk.appendChild(inkFill);
+
+        const trash = document.createElement('div');
+        const trashTop = document.createElement('div');
+        const trashWall = document.createElement('div');
+        const trashBottom = document.createElement('div');
+
+        trash.classList.add('trash');
+        trashTop.classList.add('trash-top');
+        trashWall.classList.add('trash-wall');
+        trashBottom.classList.add('trash-bottom');
+
+        trash.appendChild(trashBottom);
+        trash.appendChild(trashWall);
+        trash.appendChild(trashTop);
+
+        officeEl.appendChild(trash);
 
         officeEl.appendChild(printerEl);
 

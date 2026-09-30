@@ -6,6 +6,8 @@ html, body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .victory {
@@ -129,10 +131,10 @@ html, body {
 }
 
 .computer {
-    width: 30%;
-    height: 35%;
+    width: 25%;
+    height: 30%;
     bottom: 10%;
-    left: 10%;
+    left: 15%;
     background-color: gray;
     display: flex;
     position: absolute;
@@ -275,6 +277,44 @@ html, body {
     border-radius: 50px 50px 0 0;
     border: 2px solid gray;
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.printer-screen {
+    width: 125px;
+    height: 75px;
+    background-color: white;
+    border: 15px solid gray;
+    position: absolute;
+    bottom: 7%;
+}
+
+.scanner {
+    position: absolute;
+    width: 500px;
+    height: 150px;
+    background-color: black;
+    border: 5px solid gray;
+    top: 5%;
+}
+
+.scanner.open {
+    background-color: lightgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scanner-lid {
+    width: 500px;
+    height: 150px;
+    background-color: black;
+    border: 5px solid gray;
+    position: absolute;
+    top: -100%;
+
 }
 
 .printer-bottom {
@@ -325,8 +365,70 @@ html, body {
 }
 
 .paper {
-    width: 500px;
-    height: 750px;
+    width: 450px;
+    height: 600px;
     position: absolute;
     background-color: white;
+}
+
+.printer-buttons {
+    display: flex;
+    position: absolute;
+    bottom: 10%;
+    right: 20%;
+    gap: 10%;
+}
+
+.printer-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    flex-shrink: 0;
+}
+
+.printer-button.cancel {
+    background-color: red;
+} 
+
+.printer-button.prints {
+    background-color: green;
+}
+
+.trash {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 20%;
+    right: 10%;
+    align-items: center;
+    justify-content: center;
+}
+
+.trash-top {
+    width: 250px;
+    height: 200px;
+    border: 5px solid gray;
+    background-color: lightgray;
+    position: absolute;
+    border-radius: 50%;
+}
+
+.trash-wall {
+    width: 250px;
+    height: 200px;
+    border-inline: 5px solid gray;
+    background-color: lightgray;
+    position: absolute;
+    top: 100%;
+}
+
+.trash-bottom {
+    width: 250px;
+    height: 200px;
+    border: 5px solid gray;
+    background-color: lightgray;
+    position: absolute;
+    border-radius: 50%;
+    top: 100px;
 }
