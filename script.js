@@ -157,6 +157,16 @@ const Hazard_Database = [
             const hEl = self.el;
             if(hEl !== null)hEl.remove();
         }
+    }, {
+        id: 'printer_virus',
+        name: 'Printer Virus',
+        desc: '',
+        interval: () => {return 10000},
+        action: (self) => {},
+        summon: (self) => {},
+        complete: (self, evt) => {
+
+        }
     }
 ]
 
@@ -182,7 +192,7 @@ const Hazard_System = {
 
     getHazardList() {
         return [
-            this.getHazard('simon_says')
+            // this.getHazard('simon_says')
         ];
     }
 };
@@ -198,6 +208,7 @@ const GameEngine = {
         isOff: true,
     },
     gameEnd: false,
+    gameTimer: 0,
     startGame(){
         if(this.curScreen === null){
             this.makeOffice();
@@ -389,6 +400,8 @@ const GameEngine = {
         const tickSpeed = 100;
         let i=0, j=0;
         const clockTick = setInterval(() => {
+            this.gameTimer++;
+
             hourEl.style.transform = "translateX(-50%) rotate(" + (-90 + (i/2400)*240) + "deg)";
             i++;
 
@@ -405,6 +418,49 @@ const GameEngine = {
         }, tickSpeed);
 
         officeEl.appendChild(clockEl);
+
+        const printerEl = document.createElement('div');
+        printerEl.classList.add('printer');
+
+        const printPaper = document.createElement('div');
+        printPaper.classList.add('printer-paper');
+        printerEl.appendChild(printPaper);
+
+        
+        const printTop = document.createElement('div');
+        printTop.classList.add('printer-top');
+        printerEl.appendChild(printTop);
+
+        const printBot = document.createElement('div');
+        printBot.classList.add('printer-bottom');
+        printerEl.appendChild(printBot);
+
+        const printser = document.createElement('div');
+        printser.classList.add('printer-prints');
+        printBot.appendChild(printser);
+
+        const printedEl = document.createElement('div');
+        printedEl.classList.add('printed-paper');
+
+        printedEl.onclick = () => {
+            printedEl.remove();
+
+            const paperEl = document.createElement('div');
+            paperEl.classList.add('paper');
+            document.body.appendChild(paperEl);
+        }
+
+        printser.appendChild(printedEl);
+
+        const pInk = document.createElement('div');
+        pInk.classList.add('printer-ink-cap');
+        printBot.appendChild(pInk);
+
+        const inkFill = document.createElement('div');
+        inkFill.classList.add('printer-ink');
+        pInk.appendChild(inkFill);
+
+        officeEl.appendChild(printerEl);
 
         this.office = officeEl;
         document.body.appendChild(officeEl);

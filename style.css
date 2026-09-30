@@ -248,3 +248,85 @@ html, body {
     left: 50%;
     transform: translateX(-50%) rotate(0deg);
 }
+
+.printer {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background-color: gray;
+    right: 20%;
+    bottom: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.printer-paper {
+    background-color: white;
+    width: 450px;
+    height: 600px;
+    position: absolute;
+}
+
+.printer-top {
+    background-color: black;
+    width: 800px;
+    height: 300px;
+    border-radius: 50px 50px 0 0;
+    border: 2px solid gray;
+    position: absolute;
+}
+
+.printer-bottom {
+    background-color: black;
+    width: 800px;
+    height: 150px;
+    border-radius: 0 0 50px 50px;
+    border: 2px solid gray;
+    position: absolute;
+    bottom: -50px;
+    display: flex;
+    justify-content: center;
+}
+
+.printer-prints {
+    position: absolute;
+    width: 500px;
+    height: 125px;
+    background-color: gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 40%;
+}
+
+.printer-ink-cap {
+    width: 50px;
+    height: 100px;
+    position: absolute;
+    border: 1px solid white;
+    background-color: white;
+    bottom: 20%;
+    right: 7%;
+}
+
+.printer-ink {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+}
+
+.printed-paper {
+    background-color: white;
+    width: 450px;
+    height: 150px;
+    position: absolute;
+    top: 0;
+}
+
+.paper {
+    width: 500px;
+    height: 750px;
+    position: absolute;
+    background-color: white;
+}
