@@ -371,6 +371,10 @@ html, body {
     background-color: white;
 }
 
+.paper.delete {
+    filter: drop-shadow(0 0 25px red);
+}
+
 .printer-buttons {
     display: flex;
     position: absolute;

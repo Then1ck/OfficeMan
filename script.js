@@ -493,13 +493,9 @@ const GameEngine = {
             printedEl.onclick = () => {
                 printedEl.remove();
 
-                const paperEl = document.createElement('div');
-                paperEl.classList.add('paper');
-
-                paperEl.onclick = () => {
-                    paperEl.remove();
-                }
-                document.body.appendChild(paperEl);
+                this.makePaper([{el: trash, action: (self) => {
+                    self.remove();
+                }, highlight: 'delete'}]);
             }
 
             printser.appendChild(printedEl);
@@ -535,6 +531,70 @@ const GameEngine = {
         document.body.appendChild(officeEl);
 
     },
+
+    makePaper(overlapTargets) {
+        const paperEl = document.createElement('div');
+            paperEl.classList.add('paper');
+
+            let x = 0, y = 0, mX = 0, mY = 0;
+            let dragging = false;
+
+            let overlap = [];
+
+            paperEl.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+
+                dragging = true;
+                mX = e.clientX;
+                mY = e.clientY;
+
+                paperEl.setPointerCapture(e.pointerId);
+            });
+
+            paperEl.addEventListener('pointermove', (e) => {
+                if(!dragging)return;
+
+                x += (e.clientX - mX);
+                y += (e.clientY - mY);
+
+                mX = e.clientX;
+                mY = e.clientY;
+
+                paperEl.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+
+                const paperRect = paperEl.getBoundingClientRect();
+                overlapTargets.forEach(targets => {
+                    const targetRect = targets.el.getBoundingClientRect();
+                    const overlapping = paperRect.left < targetRect.right && paperRect.right > targetRect.left
+                    && paperRect.top < targetRect.bottom && paperRect.bottom > targetRect.top;
+
+                    if(overlapping){
+                        overlap.push(targets);
+                        paperEl.classList.add(targets.highlight);
+                    }else {
+                        const idx = overlap.indexOf(targets);
+                        if(idx !== -1){
+                            overlap.splice(idx, 1);
+                        }
+                        paperEl.classList.remove(targets.highlight)
+                    }
+                });
+            });
+
+            paperEl.addEventListener('pointerup', (e) => {
+                if(!dragging)return;
+                dragging = false;
+
+                overlap.forEach(targets => {
+                    targets.action(paperEl);
+                });
+            })
+
+            // paperEl.onclick = () => {
+            //     paperEl.remove();
+            // }
+            document.body.appendChild(paperEl);
+    }
 }
 
 GameEngine.startGame();
